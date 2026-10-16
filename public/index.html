@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLMRJ 流浪猫领养</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body style="background: #FFF8E7;">
+
+<!-- 搜索弹窗 -->
+<div id="search-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:2000;">
+  <div style="background:#fff;max-width:480px;margin:60px auto;border-radius:20px;padding:20px;">
+    <div style="display:flex;gap:10px;margin-bottom:15px;">
+      <input type="text" id="search-input" placeholder="搜索猫咪名字..." style="flex:1;padding:10px;border:1px solid #ddd;border-radius:10px;">
+      <button onclick="doSearch()" style="padding:10px 20px;background:#FFD93D;border:none;border-radius:10px;cursor:pointer;">搜索</button>
+    </div>
+    <div id="search-results" style="max-height:300px;overflow-y:auto;"></div>
+    <button onclick="closeSearchModal()" style="width:100%;padding:10px;margin-top:10px;background:#f0f0f0;border:none;border-radius:10px;cursor:pointer;">关闭</button>
+  </div>
+</div>
+
+<!-- 登录页 -->
+<div id="login-page" class="page">
+  <div class="login-container">
+    <img src="assets/logo.png" alt="LLMRJ" class="login-logo">
+    <h1>LLMRJ 流浪猫领养</h1>
+    <p class="login-sub">让每只流浪猫都有家</p>
+    
+    <div class="login-tabs">
+      <button class="login-tab active" data-tab="login">登录</button>
+      <button class="login-tab" data-tab="register">注册</button>
+    </div>
+    
+    <form id="login-form" class="login-form">
+      <input type="text" id="login-nickname" placeholder="昵称" required>
+      <input type="password" id="login-password" placeholder="密码" required>
+      <button type="submit" class="btn-primary">登录</button>
+      <div id="login-error" class="error-msg"></div>
+    </form>
+    
+    <form id="register-form" class="login-form" style="display:none;">
+      <input type="text" id="register-nickname" placeholder="起个昵称" required>
+      <input type="password" id="register-password" placeholder="设置密码" required>
+      <button type="submit" class="btn-primary">注册</button>
+      <div id="register-error" class="error-msg"></div>
+    </form>
+  </div>
+</div>
+
+<!-- 主应用 -->
+<div id="app" class="app" style="display:none;">
+  <!-- 顶部栏 -->
+  <header class="app-header">
+    <div class="header-left">
+      <img src="assets/logo.png" class="header-logo" alt="">
+      <span id="header-title">首页</span>
+    </div>
+    <button id="logout-btn" class="logout-btn">退出</button>
+  </header>
+
+  <!-- 内容区 -->
+  <main class="app-content">
+    <!-- 首页 -->
+    <div id="page-home" class="page-view active">
+      <!-- 品牌标题栏 -->
+      <div class="brand-header">
+        <div>
+          <h1 style="font-size:24px;font-weight:700;margin:0 0 2px 0;">流浪猫日记</h1>
+          <p style="font-size:11px;color:#B8956E;margin:0;">校园TNR救助 · 领养代替购买</p>
+        </div>
+        <div style="display:flex;gap:14px;font-size:18px;">
+          <span style="cursor:pointer;" onclick="showSearchModal()">🔍</span>
+          <span style="cursor:pointer;" onclick="alert('暂无新通知')">🔔</span>
+        </div>
+      </div>
+
+      <!-- 已被领养猫咪近期动态 -->
+      <div class="section">
+        <h3 class="section-title">💝 已被领养猫咪近况</h3>
+        <div class="adopted-updates-scroll">
+          <div class="update-card">
+            <div class="update-photo" style="background-image:url('assets/update1.jpg');background-size:cover;background-position:center;"></div>
+            <div class="update-info">
+              <div style="font-size:13px;font-weight:600;">橘座 在新家</div>
+              <div style="font-size:11px;color:#8A8178;margin:4px 0;">领养人小周：橘座现在胖了三斤，每天睡大觉，超幸福~</div>
+              <div style="font-size:10px;color:#B8956E;">2天前</div>
+            </div>
+          </div>
+          <div class="update-card">
+            <div class="update-photo" style="background-image:url('assets/update2.jpg');background-size:cover;background-position:center;"></div>
+            <div class="update-info">
+              <div style="font-size:13px;font-weight:600;">大橘 新家报到</div>
+              <div style="font-size:11px;color:#8A8178;margin:4px 0;">领养人小李：大橘学会用猫砂盆了，超聪明！</div>
+              <div style="font-size:10px;color:#B8956E;">上周</div>
+            </div>
+          </div>
+          <div class="update-card">
+            <div class="update-photo" style="background-image:url('assets/update3.jpg');background-size:cover;background-position:center;"></div>
+            <div class="update-info">
+              <div style="font-size:13px;font-weight:600;">黑煤球 近况</div>
+              <div style="font-size:11px;color:#8A8178;margin:4px 0;">领养人小王：黑煤球现在是家里的老大，每天要摸头10次</div>
+              <div style="font-size:10px;color:#B8956E;">3天前</div>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;font-size:11px;color:#B8956E;margin-top:8px;">左右滑动查看更多 ›</div>
+      </div>
+
+      <!-- 三大功能入口 -->
+      <div class="feature-grid">
+        <div class="feature-card feature-blue" onclick="switchTab('cat-houses')">
+          <div class="feature-icon">🏠</div>
+          <div class="feature-name">附近猫屋</div>
+        </div>
+        <div class="feature-card feature-yellow" onclick="switchTab('adoption')">
+          <div class="feature-icon">🎁</div>
+          <div class="feature-name">申请领养</div>
+        </div>
+        <div class="feature-card feature-green" onclick="showVolunteerApply()">
+          <div class="feature-icon">🤝</div>
+          <div class="feature-name">志愿者报名</div>
+          <div class="feature-badge">报名</div>
+        </div>
+      </div>
+
+      <!-- 今日重点猫屋 -->
+      <div class="house-highlight">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div>
+            <h3 style="font-size:18px;margin-bottom:8px;">操场边猫窝</h3>
+            <span class="house-tag">📍 TNR进行中</span>
+          </div>
+          <div class="house-photo-mini" style="background-image:url('assets/cat1.jpg');background-size:cover;background-position:center;">🐱</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;">
+          <div style="font-size:12px;color:#5C554D;">
+            常驻猫5只 · 今日到访12次
+          </div>
+          <button class="btn-feed" onclick="quickFeed()">+ 放粮一次</button>
+        </div>
+      </div>
+
+      <!-- 待领养猫咪横向列表 -->
+      <div class="section">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <h3 class="section-title" style="margin:0;">待领养校园猫</h3>
+          <span style="font-size:12px;color:#F2994A;cursor:pointer;" onclick="switchTab('adoption')">查看全部 ›</span>
+        </div>
+        <div id="home-cats-row" class="cats-row"></div>
+      </div>
+
+      <!-- 爱心投喂榜 -->
+      <div class="section">
+        <h3 class="section-title">❤️ 本周爱心投喂榜 TOP10</h3>
+        <div class="rank-list">
+          <div class="rank-item">
+            <span class="rank-num rank-1">1</span>
+            <span class="rank-name">张阿姨</span>
+            <span class="rank-score">1200分</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num rank-2">2</span>
+            <span class="rank-name">同学小李</span>
+            <span class="rank-score">800分</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num rank-3">3</span>
+            <span class="rank-name">猫咪控</span>
+            <span class="rank-score">500分</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num rank-normal">4</span>
+            <span class="rank-name">爱猫人士</span>
+            <span class="rank-score">450分</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num rank-normal">5</span>
+            <span class="rank-name">投喂小能手</span>
+            <span class="rank-score">380分</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num rank-normal">6</span>
+            <span class="rank-name">校园守护者</span>
+            <span class="rank-score">300分</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num rank-normal">7</span>
+            <span class="rank-name">橘座铲屎官</span>
+            <span class="rank-score">250分</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num rank-normal">8</span>
+            <span class="rank-name">三花妈妈</span>
+            <span class="rank-score">200分</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num rank-normal">9</span>
+            <span class="rank-name">路人甲</span>
+            <span class="rank-score">150分</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num rank-normal">10</span>
+            <span class="rank-name">新同学</span>
+            <span class="rank-score">100分</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 最新救助动态 -->
+      <div class="section">
+        <h3 class="section-title">最新救助动态</h3>
+        <div class="news-list">
+          <div class="news-item">
+            <div class="news-thumb" style="background-image:url('assets/cat1.jpg');background-size:cover;background-position:center;"></div>
+            <div>
+              <div style="font-size:13px;font-weight:500;">今日新救助：小橘猫 在小区花坛发现，有点怕人</div>
+              <div style="font-size:11px;color:#8A8178;margin-top:2px;">今天 · 新救助</div>
+            </div>
+          </div>
+          <div class="news-item">
+            <div class="news-thumb" style="background-image:url('assets/update3.jpg');background-size:cover;background-position:center;"></div>
+            <div>
+              <div style="font-size:13px;font-weight:500;">新救助：小黑 眼睛有点发炎，正在治疗</div>
+              <div style="font-size:11px;color:#8A8178;margin-top:2px;">昨天 · 新救助</div>
+            </div>
+          </div>
+          <div class="news-item">
+            <div class="news-thumb" style="background-image:url('assets/cat7.jpg');background-size:cover;background-position:center;"></div>
+            <div>
+              <div style="font-size:13px;font-weight:500;">新救助：小白奶猫 才2个月大，已经会用猫砂了</div>
+              <div style="font-size:11px;color:#8A8178;margin-top:2px;">3天前 · 新救助</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 今日投喂动态 -->
+      <div class="section">
+        <h3 class="section-title">今日投喂动态</h3>
+        <div id="home-feeding-list"></div>
+      </div>
+
+      <!-- 本周数据概览 -->
+      <div class="section">
+        <h3 class="section-title">本周概览</h3>
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="summary-num">8</div>
+            <div class="summary-label">待领养猫咪</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-num">12</div>
+            <div class="summary-label">本周投喂</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-num">3</div>
+            <div class="summary-label">本周救助</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 今日计划 -->
+      <div class="section">
+        <h3 class="section-title">今日计划</h3>
+        <div id="today-plan-list" class="plan-list">
+          <div class="empty-text">加载中...</div>
+        </div>
+        <div class="memo-add-row">
+          <input type="text" id="plan-input" placeholder="添加今日计划...">
+          <button id="plan-add-btn" class="btn-small">添加</button>
+        </div>
+      </div>
+
+      <!-- 快速备忘 -->
+      <div class="section">
+        <h3 class="section-title">快速备忘</h3>
+        <div id="memo-list" class="memo-list"></div>
+        <div class="memo-add-row">
+          <input type="text" id="memo-input" placeholder="记点什么...">
+          <button id="memo-add-btn" class="btn-small">添加</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 找猫咪 -->
+    <div id="page-cats" class="page-view">
+      <div class="filter-bar">
+        <button class="filter-tag active" data-filter="">全部</button>
+        <button class="filter-tag" data-filter="可领养">可领养</button>
+        <button class="filter-tag" data-filter="住院中">住院中</button>
+        <button class="filter-tag" data-filter="已绝育">已绝育</button>
+      </div>
+      <div id="cat-list" class="cat-list">
+        <div class="empty-text">加载中...</div>
+      </div>
+    </div>
+
+    <!-- 猫咪详情页（弹窗式） -->
+    <div id="page-cat-detail" class="page-view">
+      <div class="detail-back" onclick="switchTab('cats')">‹ 返回列表</div>
+      <div id="cat-detail-content"></div>
+    </div>
+
+    <!-- 投喂确认页 -->
+    <div id="page-feeding" class="page-view">
+      <div class="detail-back" onclick="goBackToCatDetail()">‹ 返回猫咪详情</div>
+      <div id="feeding-content"></div>
+    </div>
+
+    <!-- 救助计划 -->
+    <div id="page-tasks" class="page-view">
+      <div class="task-add-row">
+        <input type="text" id="task-title-input" placeholder="新任务内容...">
+        <input type="date" id="task-date-input">
+        <select id="task-category">
+          <option value="日常">日常</option>
+          <option value="医疗">医疗</option>
+          <option value="TNR">TNR</option>
+          <option value="其他">其他</option>
+        </select>
+        <button id="task-add-btn" class="btn-small">添加</button>
+      </div>
+      <div id="task-list" class="task-list">
+        <div class="empty-text">加载中...</div>
+      </div>
+    </div>
+
+    <!-- 我的 -->
+    <div id="page-profile" class="page-view">
+      <div class="profile-header">
+        <div class="avatar"></div>
+        <div>
+          <div class="profile-name" id="profile-nickname">-</div>
+          <div class="profile-sub" id="profile-desc">-</div>
+        </div>
+      </div>
+      <div class="points-card">
+        <div class="points-label">我的积分余额</div>
+        <div class="points-num" id="profile-points">0</div>
+        <div class="points-sub" id="profile-points-desc">攒积分，领养心仪的猫咪</div>
+      </div>
+      <div class="menu-list">
+        <div class="menu-item" onclick="showMyFeedings()">
+          <span>我的投喂记录</span>
+          <span class="menu-arrow">›</span>
+        </div>
+        <div class="menu-item" onclick="showMyCats()">
+          <span>我在攒分的猫咪</span>
+          <span class="menu-arrow">›</span>
+        </div>
+        <div class="menu-item admin-only" style="display:none;" onclick="showAdminPanel()">
+          <span>管理员后台</span>
+          <span class="menu-arrow">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 管理员后台 -->
+    <div id="page-admin" class="page-view">
+      <div class="detail-back" onclick="switchTab('profile')">‹ 返回我的</div>
+      <h2 class="page-title">管理员后台</h2>
+      
+      <div class="admin-section">
+        <h4>猫咪管理</h4>
+        <div class="menu-list">
+          <div class="menu-item" onclick="showAddCatForm()">
+            <span>新增猫咪档案</span>
+            <span class="menu-arrow">›</span>
+          </div>
+          <div class="menu-item" onclick="alert('开发中')">
+            <span>编辑猫咪信息</span>
+            <span class="menu-arrow">›</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="admin-section">
+        <h4>待确认投喂</h4>
+        <div id="pending-feeding-list" class="menu-list">
+          <div class="empty-text">加载中...</div>
+        </div>
+      </div>
+      
+      <div class="admin-section">
+        <h4>数据备份</h4>
+        <div class="menu-list">
+          <div class="menu-item" onclick="exportData()">
+            <span>导出全部数据</span>
+            <span class="menu-arrow">›</span>
+          </div>
+          <div class="menu-item">
+            <span>导入备份</span>
+            <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importData(event)">
+            <button class="btn-small" onclick="document.getElementById('import-file').click()">选择文件</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 我的投喂记录页 -->
+    <div id="page-my-feedings" class="page-view">
+      <div class="detail-back" onclick="switchTab('profile')">‹ 返回我的</div>
+      <h2 class="page-title">我的投喂记录</h2>
+      <div id="my-feeding-list"></div>
+    </div>
+
+    <!-- 积分兑换商城页 -->
+    <div id="page-shop" class="page-view">
+      <div class="detail-back" onclick="switchTab('home')">‹ 返回首页</div>
+      <h2 class="page-title">积分兑换商城</h2>
+      <p style="font-size:13px;color:#8A8178;margin-bottom:16px;">用你的爱心积分兑换猫咪小礼物</p>
+      
+      <div id="shop-content"></div>
+    </div>
+
+    <!-- 附近猫窝页 -->
+    <div id="page-cat-houses" class="page-view">
+      <div class="detail-back" onclick="switchTab('home')">‹ 返回首页</div>
+      <h2 class="page-title">附近猫窝</h2>
+      <p style="font-size:13px;color:#8A8178;margin-bottom:16px;">这些是我们日常投喂的流浪猫点，路过可以帮忙加把粮~</p>
+      <div id="cat-house-list"></div>
+    </div>
+
+    <!-- 积分兑换领养页 -->
+    <div id="page-adoption-apply" class="page-view">
+      <div class="detail-back" onclick="switchTab('home')">‹ 返回首页</div>
+      <h2 class="page-title">领养代替购买</h2>
+      <p style="font-size:13px;color:#8A8178;margin-bottom:16px;">一人限领养两次 · 给流浪猫一个家</p>
+      
+      <!-- 领养规则 -->
+      <div class="adoption-rules">
+        <div style="font-size:14px;font-weight:600;margin-bottom:10px;">领养规则</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <span style="font-size:12px;color:#4CAF50;">✓ 实名申请</span>
+          <span style="font-size:12px;color:#4CAF50;">✓ 完成回访</span>
+          <span style="font-size:12px;color:#4CAF50;">✓ 限领2次</span>
+        </div>
+      </div>
+      
+      <div id="adoption-content"></div>
+      
+      <!-- 我的申请统计 -->
+      <div class="section" style="margin-top:16px;">
+        <h3 class="section-title">我的领养申请</h3>
+        <div style="display:flex;justify-content:space-around;text-align:center;">
+          <div>
+            <div style="font-size:18px;font-weight:700;color:#4CAF50;">1次</div>
+            <div style="font-size:11px;color:#8A8178;">进行中</div>
+          </div>
+          <div>
+            <div style="font-size:18px;font-weight:700;">0次</div>
+            <div style="font-size:11px;color:#8A8178;">已完成</div>
+          </div>
+          <div>
+            <div style="font-size:18px;font-weight:700;color:#F2994A;">1次</div>
+            <div style="font-size:11px;color:#8A8178;">剩余名额</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 志愿者填报页 -->
+    <div id="page-volunteer" class="page-view">
+      <div class="detail-back" onclick="switchTab('home')">‹ 返回首页</div>
+      <h2 class="page-title">志愿者填报</h2>
+      <div class="section">
+        <div class="form-group">
+          <label class="form-label">你的称呼</label>
+          <input type="text" id="vol-name" class="form-input" placeholder="怎么称呼你">
+        </div>
+        <div class="form-group">
+          <label class="form-label">联系方式</label>
+          <input type="text" id="vol-phone" class="form-input" placeholder="手机号或微信">
+        </div>
+        <div class="form-group">
+          <label class="form-label">可服务时间</label>
+          <input type="text" id="vol-time" class="form-input" placeholder="如：周末上午、工作日傍晚">
+        </div>
+        <div class="form-group">
+          <label class="form-label">特长/能帮忙做什么</label>
+          <input type="text" id="vol-skills" class="form-input" placeholder="如：会开车、擅长拍照、懂宠物医疗">
+        </div>
+        <div class="form-group">
+          <label class="form-label">备注</label>
+          <textarea id="vol-notes" class="form-textarea" placeholder="其他想说的..."></textarea>
+        </div>
+        <button class="cta-button" onclick="submitVolunteer()">提交申请</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- 底部导航 -->
+  <nav class="bottom-nav">
+    <div class="nav-item active" data-tab="home">
+      <div class="nav-icon">🏠</div>
+      <span>首页</span>
+    </div>
+    <div class="nav-item" data-tab="shop">
+      <div class="nav-icon">🛍️</div>
+      <span>商城</span>
+    </div>
+    <div class="nav-item" data-tab="cat-houses">
+      <div class="nav-icon">🏠</div>
+      <span>猫屋</span>
+    </div>
+    <div class="nav-item" data-tab="adoption">
+      <div class="nav-icon">🐱</div>
+      <span>领养</span>
+    </div>
+    <div class="nav-item" data-tab="profile">
+      <div class="nav-icon">👤</div>
+      <span>我的</span>
+    </div>
+  </nav>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
