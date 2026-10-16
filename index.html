@@ -3,448 +3,1404 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>流浪猫日记</title>
-<link rel="icon" href="https://llmrj-cat.github.io/stray-cat-app/assets/logo.png">
+<title>LLMRJ 流浪猫领养</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: #FFF8F0;
-  color: #333;
-  max-width: 430px;
-  margin: 0 auto;
-  min-height: 100vh;
-  position: relative;
-  padding-bottom: 80px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-/* 登录页 */
+
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #ffffff;
+  color: #333333;
+  line-height: 1.4;
+}
+
+/* ===== 登录页 ===== */
 #login-page {
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 40px 24px;
+  padding: 20px;
 }
-.login-logo {
-  width: 80px;
-  height: 80px;
-  border-radius: 24px;
-  margin-bottom: 16px;
-}
-.login-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #8B4513;
-  margin-bottom: 8px;
-}
-.login-subtitle {
-  font-size: 14px;
-  color: #A0522D;
-  margin-bottom: 32px;
-}
-.login-tabs {
-  display: flex;
-  gap: 24px;
-  margin-bottom: 24px;
-}
-.login-tab {
-  font-size: 16px;
-  color: #999;
-  cursor: pointer;
-  padding-bottom: 8px;
-  border-bottom: 2px solid transparent;
-}
-.login-tab.active {
-  color: #FFA500;
-  border-color: #FFA500;
-  font-weight: 600;
-}
-.login-form {
-  width: 100%;
-}
-.form-group {
-  margin-bottom: 16px;
-}
-.form-input {
-  width: 100%;
-  padding: 14px 16px;
-  border: 1px solid #FFE4B5;
-  border-radius: 12px;
-  font-size: 16px;
-  background: #fff;
-}
-.form-input:focus {
-  outline: none;
-  border-color: #FFA500;
-}
-.btn-primary {
-  width: 100%;
-  padding: 14px;
-  background: #FFD700;
-  border: none;
-  border-radius: 24px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #8B4513;
-  cursor: pointer;
-}
-.error-text {
-  color: #e74c3c;
-  font-size: 14px;
-  margin-top: 8px;
-  text-align: center;
-}
-/* 主APP */
-#app { display: none; }
-.header {
-  padding: 16px 20px;
-  background: #fff;
-  border-bottom: 1px solid #FFE4B5;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-.header-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #8B4513;
-}
-.page-view { display: none; padding: 16px; }
-.page-view.active { display: block; }
-/* 卡片 */
-.card {
+
+.login-container {
   background: #fff;
   border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 16px;
-  border: 1px solid #FFE4B5;
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
 }
-.card-title {
+
+.login-logo {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  margin-bottom: 16px;
+}
+
+.login-container h1 {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.login-sub {
+  font-size: 13px;
+  color: #8A8178;
+  margin-bottom: 24px;
+}
+
+.login-tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #E8E2D9;
+}
+
+.login-tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: none;
+  font-size: 15px;
+  color: #8A8178;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+}
+
+.login-tab.active {
+  color: #F2994A;
+  border-bottom-color: #F2994A;
+  font-weight: 600;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  border: 1px solid #E8E2D9;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+}
+
+.login-form input:focus {
+  border-color: #F2994A;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  background: #FFD88A;
+  color: #333333;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.error-msg {
+  color: #E74C3C;
+  font-size: 13px;
+  margin-top: 10px;
+  min-height: 18px;
+}
+
+/* ===== 主应用 ===== */
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #FFFAF0;
+  position: relative;
+  padding-bottom: 70px;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  background: #FFFAF0;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #EFE6D0;
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+#header-title {
   font-size: 16px;
   font-weight: 600;
-  color: #8B4513;
+}
+
+.logout-btn {
+  background: none;
+  border: 1px solid #E8E2D9;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #8A8178;
+  cursor: pointer;
+}
+
+.app-content {
+  padding: 16px;
+}
+
+.page-view {
+  display: none;
+}
+
+.page-view.active {
+  display: block;
+}
+
+.page-title {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+/* ===== 区块 ===== */
+.section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+  border: 1px solid #E8E2D9;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #2D2A26;
+}
+
+/* ===== 今日计划 ===== */
+.plan-item {
+  font-size: 13px;
+  color: #5C554D;
+  padding: 8px 0;
+  border-bottom: 1px dashed #E8E2D9;
+}
+
+.plan-item:last-child {
+  border-bottom: none;
+}
+
+/* ===== 备忘 ===== */
+.memo-item {
+  background: #FFF8EC;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #8B6914;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.memo-delete {
+  background: none;
+  border: none;
+  color: #C4BAA9;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.memo-add-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.memo-add-row input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #E8E2D9;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+/* ===== 摘要卡片 ===== */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.summary-card {
+  text-align: center;
+  padding: 12px 8px;
+  background: #FAF8F5;
+  border-radius: 8px;
+}
+
+.summary-num {
+  font-size: 22px;
+  font-weight: 700;
+  color: #F2994A;
+}
+
+.summary-label {
+  font-size: 11px;
+  color: #8A8178;
+  margin-top: 2px;
+}
+
+/* ===== 猫咪列表 ===== */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.filter-tag {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #E8E2D9;
+  background: #fff;
+  font-size: 13px;
+  color: #5C554D;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.filter-tag.active {
+  background: #F2994A;
+  color: #fff;
+  border-color: #F2994A;
+}
+
+.cat-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  border: 1px solid #E8E2D9;
+  cursor: pointer;
+}
+
+.cat-photo {
+  height: 140px;
+  background: linear-gradient(135deg, #D4C5B0, #B8A088);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 14px;
+}
+
+.cat-info {
+  padding: 12px 14px;
+}
+
+.cat-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 400;
+}
+
+.status-available {
+  background: #E8F5E9;
+  color: #4CAF50;
+}
+
+.status-hospital {
+  background: #FFF3E0;
+  color: #FF9800;
+}
+
+.status-adopted {
+  background: #E0E0E0;
+  color: #757575;
+}
+
+.cat-meta {
+  font-size: 12px;
+  color: #8A8178;
+  margin-bottom: 10px;
+}
+
+.progress-bar {
+  height: 6px;
+  background: #F0EBE3;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #F2994A;
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+
+.progress-text {
+  font-size: 11px;
+  color: #8A8178;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===== 猫咪详情 ===== */
+.detail-back {
+  font-size: 14px;
+  color: #F2994A;
+  cursor: pointer;
   margin-bottom: 12px;
 }
-/* 底部导航 */
+
+.detail-hero {
+  height: 180px;
+  background: linear-gradient(135deg, #D4C5B0, #B8A088);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.detail-section {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+  border: 1px solid #E8E2D9;
+}
+
+.detail-section h4 {
+  font-size: 14px;
+  color: #8B5E3C;
+  margin-bottom: 8px;
+}
+
+.detail-row {
+  font-size: 13px;
+  color: #5C554D;
+  padding: 3px 0;
+}
+
+.cta-button {
+  background: #FFD93D;
+  color: #5C4A32;
+  text-align: center;
+  padding: 14px;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* ===== 投喂确认页 ===== */
+.feeding-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.feeding-option {
+  border: 2px solid #E8E2D9;
+  border-radius: 10px;
+  padding: 16px 8px;
+  text-align: center;
+  cursor: pointer;
+  background: #fff;
+}
+
+.feeding-option.selected {
+  border-color: #F2994A;
+  background: #FFF8EC;
+}
+
+.feeding-points {
+  font-size: 18px;
+  font-weight: 700;
+  color: #F2994A;
+}
+
+.feeding-count {
+  font-size: 11px;
+  color: #8A8178;
+  margin-top: 4px;
+}
+
+/* ===== 任务列表 ===== */
+.task-item {
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border: 1px solid #E8E2D9;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.task-check {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #D4C5B0;
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+.task-check.done {
+  background: #7FB069;
+  border-color: #7FB069;
+}
+
+.task-title {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.task-title.done-text {
+  text-decoration: line-through;
+  color: #8A8178;
+}
+
+.task-meta {
+  font-size: 11px;
+  color: #8A8178;
+}
+
+.task-tag {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #FFF0DC;
+  color: #F2994A;
+  margin-right: 4px;
+}
+
+.task-add-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.task-add-row input, .task-add-row select {
+  padding: 8px;
+  border: 1px solid #E8E2D9;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.task-add-row input[type="text"] {
+  flex: 1;
+  min-width: 120px;
+}
+
+.btn-small {
+  padding: 8px 14px;
+  background: #F2994A;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* ===== 我的页面 ===== */
+.profile-header {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+  border: 1px solid #E8E2D9;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #D4C5B0;
+}
+
+.profile-name {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.profile-sub {
+  font-size: 12px;
+  color: #8A8178;
+}
+
+.points-card {
+  background: linear-gradient(135deg, #F2994A, #E67E22);
+  border-radius: 12px;
+  padding: 20px;
+  color: #fff;
+  margin-bottom: 14px;
+}
+
+.points-label {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.points-num {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 6px 0;
+}
+
+.points-sub {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.menu-list {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #E8E2D9;
+  overflow: hidden;
+}
+
+.menu-item {
+  padding: 14px;
+  font-size: 14px;
+  border-bottom: 1px solid #F0EBE3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-arrow {
+  color: #C4BAA9;
+}
+
+/* ===== 底部导航 ===== */
 .bottom-nav {
   position: fixed;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  max-width: 430px;
-  background: #fff;
-  border-top: 1px solid #FFE4B5;
+  max-width: 480px;
+  background: #FFFAF0;
+  border-top: 1px solid #EFE6D0;
   display: flex;
-  padding: 8px 0;
-  z-index: 100;
+  align-items: center;
+  justify-content: space-around;
+  padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+  z-index: 1000;
 }
+
 .nav-item {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
+  font-size: 11px;
+  color: #8A8178;
   cursor: pointer;
-  color: #999;
+  padding: 4px 12px;
 }
+
 .nav-item.active {
-  color: #FFA500;
+  color: #F2994A;
 }
+
 .nav-icon {
   font-size: 20px;
 }
-.nav-text {
+
+/* ===== 其他 ===== */
+.empty-text {
+  text-align: center;
+  color: #C4BAA9;
+  font-size: 13px;
+  padding: 20px;
+}
+
+.admin-section {
+  margin-bottom: 20px;
+}
+
+.admin-section h4 {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #8B5E3C;
+}
+
+.feeding-record-item {
+  background: #fff;
+  padding: 12px 14px;
+  border-bottom: 1px solid #F0EBE3;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ===== 首页功能入口卡片 ===== */
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.feature-card {
+  border-radius: 16px;
+  padding: 16px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.15s;
+  position: relative;
+  background: #FFFAF0;
+  border: 1px solid #EFE6D0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.feature-card:active {
+  transform: scale(0.96);
+}
+
+.feature-blue {
+  background: linear-gradient(135deg, #4A90D9, #357ABD);
+  color: #fff;
+}
+
+.feature-yellow {
+  background: linear-gradient(135deg, #FFF3D6, #FFE4B5);
+  color: #8B6914;
+}
+
+.feature-green {
+  background: linear-gradient(135deg, #D4EDDA, #B8E0C8);
+  color: #2D5A2D;
+}
+
+.feature-icon {
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+
+.feature-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.feature-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #4CAF50;
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+/* ===== 猫屋重点卡片 ===== */
+.house-highlight {
+  background: #FFFAF0;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #EFE6D0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.house-tag {
+  display: inline-block;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: #E8F5E9;
+  color: #4CAF50;
+}
+
+.house-photo-mini {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #D4C5B0, #B8A088);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
   font-size: 12px;
 }
-/* 猫咪卡片 */
-.cat-grid {
+
+.btn-feed {
+  background: #FFC107;
+  color: #2D2A26;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ===== 领养规则卡片 ===== */
+.adoption-rules {
+  background: linear-gradient(135deg, #FFF8E1, #FFECB3);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+/* ===== 领养猫咪列表项 ===== */
+.adopt-cat-item {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+  border: 1px solid #E8E2D9;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.adopt-cat-photo {
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #D4C5B0, #B8A088);
+  flex-shrink: 0;
+}
+
+.adopt-cat-info {
+  flex: 1;
+}
+
+.adopt-cat-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.adopt-cat-meta {
+  font-size: 12px;
+  color: #8A8178;
+}
+
+.btn-adopt {
+  background: #FFC107;
+  color: #2D2A26;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.btn-adopt:disabled {
+  background: #E0E0E0;
+  color: #999;
+}
+
+/* ===== 猫咪横向列表 ===== */
+.cats-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.cat-mini-card {
+  flex-shrink: 0;
+  width: 90px;
+  cursor: pointer;
+}
+
+.cat-mini-photo {
+  width: 90px;
+  height: 90px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #D4C5B0, #B8A088);
+  margin-bottom: 6px;
+}
+
+.cat-mini-name {
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.cat-mini-meta {
+  font-size: 10px;
+  color: #8A8178;
+  text-align: center;
+}
+
+/* ===== 猫窝列表 ===== */
+.house-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+  border: 1px solid #E8E2D9;
+}
+
+.house-name {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.house-row {
+  font-size: 12px;
+  color: #5C554D;
+  padding: 2px 0;
+}
+
+/* ===== 表单页通用 ===== */
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  color: #5C554D;
+  margin-bottom: 6px;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #E8E2D9;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background: #fff;
+}
+
+.form-input:focus, .form-textarea:focus {
+  border-color: #F2994A;
+}
+
+.form-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* ===== 品牌标题栏 ===== */
+.brand-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #FFEFC2;
+  border-radius: 0 0 20px 20px;
+  margin-bottom: 16px;
+}
+
+/* ===== 爱心投喂榜 ===== */
+.rank-list {
+  background: #FFFAF0;
+  border-radius: 16px;
+  border: 1px solid #EFE6D0;
+  overflow: hidden;
+  max-height: 180px;
+  overflow-y: auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.rank-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #F5F2ED;
+}
+
+.rank-item:last-child {
+  border-bottom: none;
+}
+
+.rank-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  margin-right: 12px;
+}
+
+.rank-1 { background: #FFD700; color: #fff; }
+.rank-2 { background: #C0C0C0; color: #fff; }
+.rank-3 { background: #CD7F32; color: #fff; }
+.rank-normal { background: #F5F2ED; color: #8A8178; }
+
+.rank-name {
+  flex: 1;
+  font-size: 14px;
+}
+
+.rank-score {
+  font-size: 13px;
+  color: #F2994A;
+  font-weight: 600;
+}
+
+/* ===== 最新救助动态 ===== */
+.news-list {
+  background: #FFFAF0;
+  border-radius: 16px;
+  border: 1px solid #EFE6D0;
+  padding: 8px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.news-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #F5F2ED;
+  align-items: center;
+}
+
+.news-item:last-child {
+  border-bottom: none;
+}
+
+.news-thumb {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #D4C5B0, #B8A088);
+}
+
+/* ===== 积分商城 ===== */
+.shop-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
-.cat-card {
+
+.shop-item {
   background: #fff;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid #FFE4B5;
-  cursor: pointer;
-}
-.cat-photo {
-  width: 100%;
-  height: 120px;
-  background: #FFE4B5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px;
-}
-.cat-info {
-  padding: 12px;
-}
-.cat-name {
-  font-size: 15px;
-  font-weight: 600;
-  color: #333;
-}
-.cat-meta {
-  font-size: 12px;
-  color: #999;
-  margin-top: 4px;
-}
-/* 空状态 */
-.empty-text {
-  text-align: center;
-  color: #999;
-  padding: 40px 0;
-  font-size: 14px;
-}
-/* 按钮 */
-.btn-outline {
-  padding: 10px 20px;
-  border: 1px solid #FFA500;
   border-radius: 20px;
-  background: #fff;
-  color: #FFA500;
-  font-size: 14px;
-  cursor: pointer;
+  padding: 16px;
+  text-align: center;
+  border: 1px solid #FFE8B3;
 }
-.btn-danger {
-  background: #e74c3c;
+
+.shop-icon {
+  font-size: 40px;
+  margin-bottom: 8px;
+}
+
+.shop-name {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.shop-desc {
+  font-size: 11px;
+  color: #8A8178;
+  margin-bottom: 8px;
+}
+
+.shop-price {
+  font-size: 14px;
+  color: #F2994A;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.btn-exchange {
+  background: #F2994A;
   color: #fff;
   border: none;
-  padding: 12px;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  width: 100%;
-}
-/* 个人中心 */
-.profile-header {
-  text-align: center;
-  padding: 24px 0;
-}
-.avatar {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: #FFE4B5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  margin: 0 auto 12px;
-}
-.profile-name {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-}
-.profile-points {
-  font-size: 14px;
-  color: #FFA500;
-  margin-top: 4px;
-}
-.menu-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 0;
-  border-bottom: 1px solid #f5f5f5;
-  cursor: pointer;
-}
-.menu-item:last-child { border-bottom: none; }
-.menu-text { font-size: 15px; color: #333; }
-.menu-arrow { color: #ccc; }
-/* 任务列表 */
-.task-item {
-  padding: 12px;
-  background: #FFF8F0;
-  border-radius: 12px;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.task-title { font-size: 14px; color: #333; }
-.task-status {
+  padding: 6px 16px;
+  border-radius: 16px;
   font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 10px;
-  background: #FFE4B5;
-  color: #8B4513;
+  cursor: pointer;
+}
+
+.btn-exchange:disabled {
+  background: #E0E0E0;
+  color: #999;
 }
 </style>
 </head>
-<body>
+<body style="background: #FFF8E7;">
 
 <!-- 登录页 -->
-<div id="login-page">
-  <img src="https://llmrj-cat.github.io/stray-cat-app/assets/logo.png" class="login-logo" alt="logo">
-  <div class="login-title">流浪猫日记</div>
-  <div class="login-subtitle">记录每一只小流浪的温暖</div>
-  
-  <div class="login-tabs">
-    <div class="login-tab active" data-tab="login" onclick="switchLoginTab('login')">登录</div>
-    <div class="login-tab" data-tab="register" onclick="switchLoginTab('register')">注册</div>
+<div id="login-page" class="page">
+  <div class="login-container">
+    <h1>LLMRJ 流浪猫领养</h1>
+    <p class="login-sub">让每只流浪猫都有家</p>
+    
+    <div class="login-tabs">
+      <button class="login-tab active" data-tab="login">登录</button>
+      <button class="login-tab" data-tab="register">注册</button>
+    </div>
+    
+    <form id="login-form" class="login-form">
+      <input type="text" id="login-nickname" placeholder="昵称" required>
+      <input type="password" id="login-password" placeholder="密码" required>
+      <button type="submit" class="btn-primary">登录</button>
+      <div id="login-error" class="error-msg"></div>
+    </form>
+    
+    <form id="register-form" class="login-form" style="display:none;">
+      <input type="text" id="register-nickname" placeholder="起个昵称" required>
+      <input type="password" id="register-password" placeholder="设置密码" required>
+      <button type="submit" class="btn-primary">注册</button>
+      <div id="register-error" class="error-msg"></div>
+    </form>
   </div>
-
-  <form class="login-form" id="login-form" onsubmit="handleLogin(event)">
-    <div class="form-group">
-      <input type="text" class="form-input" id="login-nickname" placeholder="昵称" required>
-    </div>
-    <div class="form-group">
-      <input type="password" class="form-input" id="login-password" placeholder="密码" required>
-    </div>
-    <button type="submit" class="btn-primary">登录</button>
-    <div class="error-text" id="login-error"></div>
-  </form>
-
-  <form class="login-form" id="register-form" style="display:none;" onsubmit="handleRegister(event)">
-    <div class="form-group">
-      <input type="text" class="form-input" id="register-nickname" placeholder="昵称" required>
-    </div>
-    <div class="form-group">
-      <input type="password" class="form-input" id="register-password" placeholder="密码" required>
-    </div>
-    <button type="submit" class="btn-primary">注册</button>
-    <div class="error-text" id="register-error"></div>
-  </form>
 </div>
 
-<!-- 主APP -->
-<div id="app">
-  <div class="header">
-    <div class="header-title" id="header-title">首页</div>
-  </div>
+<!-- 主应用 -->
+<div id="app" class="app" style="display:none;">
+  <!-- 顶部栏 -->
+  <header class="app-header">
+    <div class="header-left">
+      <span id="header-title">首页</span>
+    </div>
+    <button id="logout-btn" class="logout-btn">退出</button>
+  </header>
 
-  <!-- 首页 -->
-  <div class="page-view active" id="page-home">
-    <div class="card">
-      <div class="card-title">今日小目标</div>
-      <div id="today-plan-list">
-        <div class="empty-text">今日暂无安排</div>
+  <!-- 内容区 -->
+  <main class="app-content">
+    <!-- 首页 -->
+    <div id="page-home" class="page-view active">
+      <!-- 品牌标题栏 -->
+      <div class="brand-header">
+        <div>
+          <h1 style="font-size:24px;font-weight:700;margin:0 0 2px 0;">流浪猫日记</h1>
+          <p style="font-size:11px;color:#B8956E;margin:0;">校园TNR救助 · 领养代替购买</p>
+        </div>
+        <div style="display:flex;gap:14px;font-size:18px;">
+          <span style="cursor:pointer;" onclick="alert('暂无新通知')">🔔</span>
+        </div>
+      </div>
+
+      <!-- 三大功能入口 -->
+      <div class="feature-grid">
+        <div class="feature-card feature-blue" onclick="switchTab('cat-houses')">
+          <div class="feature-icon">🏠</div>
+          <div class="feature-name">附近猫屋</div>
+        </div>
+        <div class="feature-card feature-yellow" onclick="switchTab('adoption')">
+          <div class="feature-icon">🎁</div>
+          <div class="feature-name">申请领养</div>
+        </div>
+        <div class="feature-card feature-green" onclick="alert('志愿者报名即将开放')">
+          <div class="feature-icon">🤝</div>
+          <div class="feature-name">志愿者报名</div>
+          <div class="feature-badge">报名</div>
+        </div>
+      </div>
+
+      <!-- 今日重点猫屋 -->
+      <div class="house-highlight">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div>
+            <h3 style="font-size:18px;margin-bottom:8px;">操场边猫窝</h3>
+            <span class="house-tag">📍 TNR进行中</span>
+          </div>
+          <div class="house-photo-mini">🐱</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;">
+          <div style="font-size:12px;color:#5C554D;">
+            常驻猫5只 · 今日到访12次
+          </div>
+          <button class="btn-feed" onclick="quickFeed()">+ 放粮一次</button>
+        </div>
+      </div>
+
+      <!-- 待领养猫咪横向列表 -->
+      <div class="section">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <h3 class="section-title" style="margin:0;">待领养校园猫</h3>
+          <span style="font-size:12px;color:#F2994A;cursor:pointer;" onclick="switchTab('cats')">查看全部 ›</span>
+        </div>
+        <div id="home-cats-row" class="cats-row"></div>
+      </div>
+
+      <!-- 爱心投喂榜 -->
+      <div class="section">
+        <h3 class="section-title">❤️ 本周爱心投喂榜 TOP10</h3>
+        <div class="rank-list">
+          <div class="rank-item">
+            <span class="rank-num rank-1">1</span>
+            <span class="rank-name">张阿姨</span>
+            <span class="rank-score">1200分</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num rank-2">2</span>
+            <span class="rank-name">同学小李</span>
+            <span class="rank-score">800分</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num rank-3">3</span>
+            <span class="rank-name">猫咪控</span>
+            <span class="rank-score">500分</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num rank-normal">4</span>
+            <span class="rank-name">爱猫人士</span>
+            <span class="rank-score">450分</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num rank-normal">5</span>
+            <span class="rank-name">投喂小能手</span>
+            <span class="rank-score">380分</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 本周数据概览 -->
+      <div class="section">
+        <h3 class="section-title">本周概览</h3>
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="summary-num">8</div>
+            <div class="summary-label">待领养猫咪</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-num">12</div>
+            <div class="summary-label">本周投喂</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-num">3</div>
+            <div class="summary-label">本周救助</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 今日计划 -->
+      <div class="section">
+        <h3 class="section-title">今日计划</h3>
+        <div id="today-plan-list" class="plan-list">
+        </div>
+        <div class="memo-add-row">
+          <input type="text" id="plan-input" placeholder="添加今日计划...">
+          <button id="plan-add-btn" class="btn-small">添加</button>
+        </div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-title">待领养小流浪</div>
-      <div class="cat-grid" id="home-cats-grid">
-        <div class="empty-text">暂无待领养猫咪</div>
+
+    <!-- 找猫咪 -->
+    <div id="page-cats" class="page-view">
+      <div class="filter-bar">
+        <button class="filter-tag active" data-filter="">全部</button>
+        <button class="filter-tag" data-filter="可领养">可领养</button>
+        <button class="filter-tag" data-filter="住院中">住院中</button>
+        <button class="filter-tag" data-filter="已绝育">已绝育</button>
       </div>
+      <div id="cat-list" class="cat-list"></div>
     </div>
-  </div>
 
-  <!-- 找猫咪 -->
-  <div class="page-view" id="page-cats">
-    <div class="card-title" style="margin-bottom:12px;">所有猫咪</div>
-    <div class="cat-grid" id="cats-grid">
-      <div class="empty-text">暂无猫咪</div>
+    <!-- 猫咪详情页 -->
+    <div id="page-cat-detail" class="page-view">
+      <div class="detail-back" onclick="switchTab('cats')">‹ 返回列表</div>
+      <div id="cat-detail-content"></div>
     </div>
-  </div>
 
-  <!-- 救助计划 -->
-  <div class="page-view" id="page-tasks">
-    <div class="card-title" style="margin-bottom:12px;">救助任务</div>
-    <div id="tasks-list">
-      <div class="empty-text">暂无任务</div>
+    <!-- 救助计划 -->
+    <div id="page-tasks" class="page-view">
+      <div class="task-add-row">
+        <input type="text" id="task-title-input" placeholder="新任务内容...">
+        <input type="date" id="task-date-input">
+        <select id="task-category">
+          <option value="日常">日常</option>
+          <option value="医疗">医疗</option>
+          <option value="TNR">TNR</option>
+          <option value="其他">其他</option>
+        </select>
+        <button id="task-add-btn" class="btn-small">添加</button>
+      </div>
+      <div id="task-list" class="task-list"></div>
     </div>
-  </div>
 
-  <!-- 我的 -->
-  <div class="page-view" id="page-profile">
-    <div class="card">
+    <!-- 我的 -->
+    <div id="page-profile" class="page-view">
       <div class="profile-header">
-        <div class="avatar">🐱</div>
-        <div class="profile-name" id="profile-nickname">用户名</div>
-        <div class="profile-points">积分：<span id="profile-points">0</span></div>
+        <div class="avatar"></div>
+        <div>
+          <div class="profile-name" id="profile-nickname">-</div>
+          <div class="profile-sub" id="profile-desc">-</div>
+        </div>
+      </div>
+      <div class="points-card">
+        <div class="points-label">我的积分余额</div>
+        <div class="points-num" id="profile-points">0</div>
+        <div class="points-sub">攒积分，领养心仪的猫咪</div>
+      </div>
+      <div class="menu-list">
+        <div class="menu-item" onclick="alert('我的投喂记录')">
+          <span>我的投喂记录</span>
+          <span class="menu-arrow">›</span>
+        </div>
+        <div class="menu-item" onclick="alert('附近猫屋')">
+          <span>附近猫屋</span>
+          <span class="menu-arrow">›</span>
+        </div>
+        <div class="menu-item" onclick="switchTab('shop')">
+          <span>积分商城</span>
+          <span class="menu-arrow">›</span>
+        </div>
       </div>
     </div>
-    <div class="card">
-      <div class="menu-item" onclick="alert('我的投喂记录')">
-        <div class="menu-text">我的投喂记录</div>
-        <div class="menu-arrow">›</div>
-      </div>
-      <div class="menu-item" onclick="alert('附近猫屋')">
-        <div class="menu-text">附近猫屋</div>
-        <div class="menu-arrow">›</div>
-      </div>
-      <div class="menu-item" onclick="alert('积分商城')">
-        <div class="menu-text">积分商城</div>
-        <div class="menu-arrow">›</div>
-      </div>
-    </div>
-    <button class="btn-danger" onclick="handleLogout()">退出登录</button>
-  </div>
-</div>
 
-<!-- 底部导航 -->
-<div class="bottom-nav">
-  <div class="nav-item active" data-tab="home" onclick="switchTab('home')">
-    <div class="nav-icon">🏠</div>
-    <div class="nav-text">首页</div>
-  </div>
-  <div class="nav-item" data-tab="cats" onclick="switchTab('cats')">
-    <div class="nav-icon">🐱</div>
-    <div class="nav-text">找猫咪</div>
-  </div>
-  <div class="nav-item" data-tab="tasks" onclick="switchTab('tasks')">
-    <div class="nav-icon">📋</div>
-    <div class="nav-text">救助计划</div>
-  </div>
-  <div class="nav-item" data-tab="profile" onclick="switchTab('profile')">
-    <div class="nav-icon">👤</div>
-    <div class="nav-text">我的</div>
-  </div>
+    <!-- 附近猫窝页 -->
+    <div id="page-cat-houses" class="page-view">
+      <div class="detail-back" onclick="switchTab('home')">‹ 返回首页</div>
+      <h2 class="page-title">附近猫窝</h2>
+      <div id="cat-house-list">
+        <div class="house-card">
+          <div class="house-name">操场边猫窝</div>
+          <div class="house-row">📍 位置：学校操场东北角</div>
+          <div class="house-row">👤 负责人：张阿姨</div>
+          <div class="house-row">🍽️ 投喂频率：每天早晚各一次</div>
+        </div>
+        <div class="house-card">
+          <div class="house-name">图书馆后门猫窝</div>
+          <div class="house-row">📍 位置：图书馆后门台阶下</div>
+          <div class="house-row">👤 负责人：志愿者小李</div>
+          <div class="house-row">🍽️ 投喂频率：每天中午一次</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 领养页 -->
+    <div id="page-adoption" class="page-view">
+      <div class="detail-back" onclick="switchTab('home')">‹ 返回首页</div>
+      <h2 class="page-title">领养代替购买</h2>
+      <div class="adoption-rules">
+        <div style="font-size:14px;font-weight:600;margin-bottom:10px;">领养规则</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <span style="font-size:12px;color:#4CAF50;">✓ 实名申请</span>
+          <span style="font-size:12px;color:#4CAF50;">✓ 完成回访</span>
+          <span style="font-size:12px;color:#4CAF50;">✓ 限领2次</span>
+        </div>
+      </div>
+      <div id="adoption-content"></div>
+    </div>
+
+    <!-- 积分商城页 -->
+    <div id="page-shop" class="page-view">
+      <div class="detail-back" onclick="switchTab('home')">‹ 返回首页</div>
+      <h2 class="page-title">积分兑换商城</h2>
+      <div id="shop-content"></div>
+    </div>
+  </main>
+
+  <!-- 底部导航 -->
+  <nav class="bottom-nav">
+    <div class="nav-item active" data-tab="home">
+      <div class="nav-icon">🏠</div>
+      <span>首页</span>
+    </div>
+    <div class="nav-item" data-tab="shop">
+      <div class="nav-icon">🛍️</div>
+      <span>商城</span>
+    </div>
+    <div class="nav-item" data-tab="cat-houses">
+      <div class="nav-icon">🏠</div>
+      <span>猫屋</span>
+    </div>
+    <div class="nav-item" data-tab="adoption">
+      <div class="nav-icon">🐱</div>
+      <span>领养</span>
+    </div>
+    <div class="nav-item" data-tab="profile">
+      <div class="nav-icon">👤</div>
+      <span>我的</span>
+    </div>
+  </nav>
 </div>
 
 <script>
-// ===== 本地数据库（localStorage）=====
+// ===== 本地数据库 =====
 function getDB() {
   return {
     users: JSON.parse(localStorage.getItem('users') || '[]'),
-    cats: JSON.parse(localStorage.getItem('cats') || '[]'),
+    cats: JSON.parse(localStorage.getItem('cats') || '[{"id":1,"name":"橘子","gender":"公","age":"2岁","neutered":"已绝育","status":"可领养","current_points":120,"threshold_points":500,"personality":"亲人黏人","health":"健康","location":"操场边猫窝"},{"id":2,"name":"小白","gender":"母","age":"1岁","neutered":"已绝育","status":"可领养","current_points":80,"threshold_points":500,"personality":"安静胆小","health":"健康","location":"图书馆后门猫窝"},{"id":3,"name":"小黑","gender":"公","age":"3岁","neutered":"已绝育","status":"住院中","current_points":300,"threshold_points":800,"personality":"活泼好动","health":"感冒恢复中","location":"校医院"},{"id":4,"name":"三花","gender":"母","age":"4岁","neutered":"已绝育","status":"可领养","current_points":200,"threshold_points":500,"personality":"温柔妈妈","health":"健康","location":"食堂后门"}]'),
     tasks: JSON.parse(localStorage.getItem('tasks') || '[]'),
-    feedings: JSON.parse(localStorage.getItem('feedings') || '[]')
+    memos: JSON.parse(localStorage.getItem('memos') || '[]')
   };
 }
 function saveDB(db) {
   localStorage.setItem('users', JSON.stringify(db.users));
   localStorage.setItem('cats', JSON.stringify(db.cats));
   localStorage.setItem('tasks', JSON.stringify(db.tasks));
-  localStorage.setItem('feedings', JSON.stringify(db.feedings));
-}
-
-// 初始化默认数据
-function initDefaultData() {
-  const db = getDB();
-  if (db.cats.length === 0) {
-    db.cats = [
-      { id: 1, name: '橘子', gender: '公', neutered: '已绝育', status: '可领养', photo: '🐱', points: 0 },
-      { id: 2, name: '小白', gender: '母', neutered: '已绝育', status: '可领养', photo: '🐈', points: 0 },
-      { id: 3, name: '小黑', gender: '公', neutered: '未绝育', status: '待救助', photo: '🐈‍⬛', points: 0 },
-      { id: 4, name: '三花', gender: '母', neutered: '已绝育', status: '可领养', photo: '🐱', points: 0 }
-    ];
-    db.tasks = [
-      { id: 1, title: '给橘子喂猫粮', status: '进行中' },
-      { id: 2, title: '带小黑去绝育', status: '待开始' },
-      { id: 3, title: '给三花找领养家庭', status: '进行中' }
-    ];
-    saveDB(db);
-  }
+  localStorage.setItem('memos', JSON.stringify(db.memos));
 }
 
 let currentUser = null;
+let currentCatId = null;
 
 // ===== 登录注册 =====
-function switchLoginTab(tab) {
-  document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
-  document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
-  document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
-  document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
-}
+document.querySelectorAll('.login-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const isLogin = tab.dataset.tab === 'login';
+    document.getElementById('login-form').style.display = isLogin ? 'block' : 'none';
+    document.getElementById('register-form').style.display = isLogin ? 'none' : 'block';
+  });
+});
 
-function handleLogin(e) {
+document.getElementById('login-form').addEventListener('submit', (e) => {
   e.preventDefault();
   const nickname = document.getElementById('login-nickname').value;
   const password = document.getElementById('login-password').value;
@@ -455,9 +1411,9 @@ function handleLogin(e) {
     return;
   }
   loginSuccess(user);
-}
+});
 
-function handleRegister(e) {
+document.getElementById('register-form').addEventListener('submit', (e) => {
   e.preventDefault();
   const nickname = document.getElementById('register-nickname').value;
   const password = document.getElementById('register-password').value;
@@ -470,7 +1426,7 @@ function handleRegister(e) {
   db.users.push(newUser);
   saveDB(db);
   loginSuccess(newUser);
-}
+});
 
 function loginSuccess(user) {
   currentUser = user;
@@ -482,11 +1438,9 @@ function loginSuccess(user) {
   switchTab('home');
 }
 
-function handleLogout() {
-  currentUser = null;
-  localStorage.removeItem('userId');
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('login-page').style.display = 'flex';
+function updateProfileUI() {
+  document.getElementById('profile-nickname').textContent = currentUser.nickname;
+  document.getElementById('profile-points').textContent = currentUser.points;
 }
 
 // ===== 页面切换 =====
@@ -494,108 +1448,327 @@ function switchTab(tabName) {
   document.querySelectorAll('.nav-item').forEach(item => {
     item.classList.toggle('active', item.dataset.tab === tabName);
   });
+  
   document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+  
   const pageMap = {
     home: 'page-home',
     cats: 'page-cats',
     tasks: 'page-tasks',
-    profile: 'page-profile'
+    profile: 'page-profile',
+    'cat-detail': 'page-cat-detail',
+    'cat-houses': 'page-cat-houses',
+    adoption: 'page-adoption',
+    shop: 'page-shop'
   };
-  document.getElementById(pageMap[tabName]).classList.add('active');
-  const titleMap = { home: '首页', cats: '找猫咪', tasks: '救助计划', profile: '我的' };
-  document.getElementById('header-title').textContent = titleMap[tabName];
+  
+  const pageId = pageMap[tabName] || 'page-home';
+  document.getElementById(pageId).classList.add('active');
+  
+  const titleMap = {
+    home: '首页',
+    cats: '找猫咪',
+    tasks: '救助计划',
+    profile: '我的',
+    'cat-detail': '猫咪详情',
+    'cat-houses': '附近猫屋',
+    adoption: '领养代替购买',
+    shop: '积分商城'
+  };
+  document.getElementById('header-title').textContent = titleMap[tabName] || '首页';
   
   if (tabName === 'home') loadHomeData();
   if (tabName === 'cats') loadCats();
   if (tabName === 'tasks') loadTasks();
-  if (tabName === 'profile') loadProfile();
+  if (tabName === 'adoption') loadAdoptionPage();
+  if (tabName === 'shop') loadShopPage();
 }
 
-// ===== 数据加载 =====
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => switchTab(item.dataset.tab));
+});
+
+document.getElementById('logout-btn').addEventListener('click', () => {
+  currentUser = null;
+  localStorage.removeItem('userId');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-page').style.display = 'flex';
+});
+
+// ===== 首页数据 =====
 function loadHomeData() {
   const db = getDB();
+  
   // 今日计划
+  const today = new Date().toISOString().split('T')[0];
+  const todayTasks = db.tasks.filter(t => t.date === today);
   const planList = document.getElementById('today-plan-list');
-  const todayTasks = db.tasks.filter(t => t.status === '进行中');
   if (todayTasks.length === 0) {
     planList.innerHTML = '<div class="empty-text">今日暂无安排</div>';
   } else {
     planList.innerHTML = todayTasks.map(t => 
-      `<div class="task-item"><div class="task-title">${t.title}</div><div class="task-status">进行中</div></div>`
+      `<div class="plan-item">${t.title}</div>`
     ).join('');
   }
-  // 待领养猫咪
-  const adoptCats = db.cats.filter(c => c.status === '可领养');
-  const grid = document.getElementById('home-cats-grid');
-  if (adoptCats.length === 0) {
-    grid.innerHTML = '<div class="empty-text">暂无待领养猫咪</div>';
-  } else {
-    grid.innerHTML = adoptCats.map(c => `
-      <div class="cat-card" onclick="alert('查看${c.name}详情')">
-        <div class="cat-photo">${c.photo}</div>
-        <div class="cat-info">
-          <div class="cat-name">${c.name}</div>
-          <div class="cat-meta">${c.gender} · ${c.neutered}</div>
-        </div>
-      </div>
-    `).join('');
-  }
+  
+  // 待领养猫咪横向列表
+  const adoptableCats = db.cats.filter(c => c.status === '可领养');
+  document.getElementById('home-cats-row').innerHTML = adoptableCats.slice(0, 8).map(c => `
+    <div class="cat-mini-card" onclick="showCatDetail(${c.id})">
+      <div class="cat-mini-photo">🐱</div>
+      <div class="cat-mini-name">${c.name}</div>
+      <div class="cat-mini-meta">${c.gender} · ${c.neutered}</div>
+    </div>
+  `).join('');
 }
 
-function loadCats() {
+// 添加今日计划
+document.getElementById('plan-add-btn').addEventListener('click', () => {
+  const input = document.getElementById('plan-input');
+  const title = input.value.trim();
+  if (!title) return;
   const db = getDB();
-  const grid = document.getElementById('cats-grid');
-  if (db.cats.length === 0) {
-    grid.innerHTML = '<div class="empty-text">暂无猫咪</div>';
-  } else {
-    grid.innerHTML = db.cats.map(c => `
-      <div class="cat-card" onclick="alert('查看${c.name}详情')">
-        <div class="cat-photo">${c.photo}</div>
+  const today = new Date().toISOString().split('T')[0];
+  db.tasks.push({ id: Date.now(), title, date: today });
+  saveDB(db);
+  input.value = '';
+  loadHomeData();
+});
+
+// ===== 猫咪列表 =====
+function loadCats(filter = '') {
+  const db = getDB();
+  let cats = db.cats;
+  if (filter) cats = cats.filter(c => c.status === filter || c.neutered === filter);
+  
+  const list = document.getElementById('cat-list');
+  if (cats.length === 0) {
+    list.innerHTML = '<div class="empty-text">暂无猫咪</div>';
+    return;
+  }
+  
+  list.innerHTML = cats.map(cat => {
+    const percent = cat.threshold_points > 0 
+      ? Math.min(100, (cat.current_points / cat.threshold_points * 100)).toFixed(0) 
+      : 0;
+    const statusClass = cat.status === '可领养' ? 'status-available' 
+      : cat.status === '住院中' ? 'status-hospital' : 'status-adopted';
+    
+    return `
+      <div class="cat-card" onclick="showCatDetail(${cat.id})">
+        <div class="cat-photo">🐱</div>
         <div class="cat-info">
-          <div class="cat-name">${c.name}</div>
-          <div class="cat-meta">${c.gender} · ${c.status}</div>
+          <div class="cat-name">
+            ${cat.name}
+            <span class="status-badge ${statusClass}">${cat.status}</span>
+          </div>
+          <div class="cat-meta">${cat.gender} · ${cat.age || '年龄未知'} · ${cat.neutered}</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:${percent}%"></div>
+          </div>
+          <div class="progress-text">
+            <span>${cat.current_points}/${cat.threshold_points}分</span>
+          </div>
         </div>
       </div>
-    `).join('');
-  }
+    `;
+  }).join('');
 }
 
+// 筛选标签
+document.querySelectorAll('.filter-tag').forEach(tag => {
+  tag.addEventListener('click', () => {
+    document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+    tag.classList.add('active');
+    loadCats(tag.dataset.filter);
+  });
+});
+
+// ===== 猫咪详情 =====
+function showCatDetail(catId) {
+  currentCatId = catId;
+  const db = getDB();
+  const cat = db.cats.find(c => c.id === catId);
+  if (!cat) return;
+  
+  const percent = cat.threshold_points > 0 
+    ? Math.min(100, (cat.current_points / cat.threshold_points * 100)).toFixed(0) 
+    : 0;
+  
+  document.getElementById('cat-detail-content').innerHTML = `
+    <div class="detail-hero">🐱</div>
+    <h2 style="font-size:22px;margin-bottom:4px;">${cat.name}</h2>
+    <div style="color:#8A8178;font-size:13px;margin-bottom:16px;">${cat.gender} · ${cat.age} · ${cat.location}</div>
+    
+    <div class="detail-section" style="background:#FFF8EC;border-color:#F2D9A8;">
+      <h4 style="color:#8B6914;">领养进度 · 需要${cat.threshold_points}积分</h4>
+      <div class="progress-bar" style="background:#F2D9A8;">
+        <div class="progress-fill" style="width:${percent}%"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#8B6914;margin-top:6px;">
+        <span>当前 ${cat.current_points}分</span>
+      </div>
+    </div>
+    
+    <div class="detail-section">
+      <h4>基本情况</h4>
+      <div class="detail-row">性别：${cat.gender}</div>
+      <div class="detail-row">年龄：${cat.age || '未知'}</div>
+      <div class="detail-row">绝育：${cat.neutered}</div>
+    </div>
+    
+    <div class="detail-section">
+      <h4>现状</h4>
+      <div class="detail-row">性格：${cat.personality || '未知'}</div>
+      <div class="detail-row">健康：${cat.health || '良好'}</div>
+      <div class="detail-row">位置：${cat.location || '未知'}</div>
+    </div>
+    
+    <button class="cta-button" onclick="alert('投喂攒积分功能即将开放')">投喂猫粮攒积分</button>
+  `;
+  
+  switchTab('cat-detail');
+}
+
+// ===== 救助任务 =====
 function loadTasks() {
   const db = getDB();
-  const list = document.getElementById('tasks-list');
+  const list = document.getElementById('task-list');
   if (db.tasks.length === 0) {
     list.innerHTML = '<div class="empty-text">暂无任务</div>';
-  } else {
-    list.innerHTML = db.tasks.map(t => `
-      <div class="task-item">
-        <div class="task-title">${t.title}</div>
-        <div class="task-status">${t.status}</div>
-      </div>
-    `).join('');
+    return;
   }
+  
+  list.innerHTML = db.tasks.map(t => `
+    <div class="task-item">
+      <div class="task-check ${t.done ? 'done' : ''}" onclick="toggleTask(${t.id})"></div>
+      <div>
+        <div class="task-title ${t.done ? 'done-text' : ''}">${t.title}</div>
+        <div class="task-meta">
+          <span class="task-tag">${t.category || '日常'}</span>
+          ${t.date || ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
 }
 
-function loadProfile() {
+function toggleTask(id) {
+  const db = getDB();
+  const task = db.tasks.find(t => t.id === id);
+  if (task) task.done = !task.done;
+  saveDB(db);
+  loadTasks();
+}
+
+document.getElementById('task-add-btn').addEventListener('click', () => {
+  const title = document.getElementById('task-title-input').value.trim();
+  const date = document.getElementById('task-date-input').value;
+  const category = document.getElementById('task-category').value;
+  
+  if (!title || !date) {
+    alert('请填写任务标题和日期');
+    return;
+  }
+  
+  const db = getDB();
+  db.tasks.push({ id: Date.now(), title, date, category, done: false });
+  saveDB(db);
+  
+  document.getElementById('task-title-input').value = '';
+  loadTasks();
+});
+
+// ===== 附近猫屋 =====
+function quickFeed() {
+  alert('已记录：操场边猫窝放粮一次！🐱');
+}
+
+// ===== 积分商城 =====
+const shopItems = [
+  { name: '猫窝', icon: '🏠', price: 3, desc: '柔软保暖猫窝一个' },
+  { name: '逗猫棒', icon: '🎣', price: 1, desc: '羽毛逗猫棒一根' },
+  { name: '猫薄荷', icon: '🌿', price: 2, desc: '天然猫薄荷一包' },
+  { name: '猫抓板', icon: '📦', price: 2, desc: '瓦楞纸猫抓板' },
+  { name: '小老鼠玩具', icon: '🐭', price: 1, desc: '毛绒小老鼠玩具' },
+  { name: '猫罐头', icon: '🥫', price: 3, desc: '诚实一口主食罐' },
+  { name: '猫条', icon: '🥩', price: 1, desc: '诚实一口猫条3根' },
+  { name: '围巾', icon: '🧣', price: 2, desc: '可爱猫咪小围巾' }
+];
+
+function loadShopPage() {
+  const content = document.getElementById('shop-content');
+  
+  let html = `
+    <div style="background:linear-gradient(135deg,#FFF8E1,#FFECB3);border-radius:12px;padding:16px;margin-bottom:16px;text-align:center;">
+      <div style="font-size:13px;color:#8A8178;">我的积分</div>
+      <div style="font-size:28px;font-weight:700;color:#F2994A;">${currentUser.points} 分</div>
+    </div>
+  `;
+  
+  html += '<div class="shop-grid">';
+  shopItems.forEach(item => {
+    const enough = currentUser.points >= item.price;
+    html += `
+      <div class="shop-item">
+        <div class="shop-icon">${item.icon}</div>
+        <div class="shop-name">${item.name}</div>
+        <div class="shop-desc">${item.desc}</div>
+        <div class="shop-price">${item.price} 积分</div>
+        <button class="btn-exchange" ${enough ? '' : 'disabled'} onclick="${enough ? `exchangeItem('${item.name}', ${item.price})` : ''}">
+          ${enough ? '兑换' : '积分不足'}
+        </button>
+      </div>
+    `;
+  });
+  html += '</div>';
+  
+  content.innerHTML = html;
+}
+
+function exchangeItem(name, price) {
+  alert(`兑换成功！${name} 将在3个工作日内寄出，扣除${price}积分`);
+  currentUser.points -= price;
+  const db = getDB();
+  const user = db.users.find(u => u.id === currentUser.id);
+  if (user) user.points = currentUser.points;
+  saveDB(db);
   updateProfileUI();
 }
 
-function updateProfileUI() {
-  if (currentUser) {
-    document.getElementById('profile-nickname').textContent = currentUser.nickname;
-    document.getElementById('profile-points').textContent = currentUser.points;
+// ===== 领养页 =====
+function loadAdoptionPage() {
+  const db = getDB();
+  const cats = db.cats.filter(c => c.status === '可领养');
+  
+  let html = '';
+  if (cats.length === 0) {
+    html = '<div class="empty-text">暂时没有可领养的猫咪</div>';
+  } else {
+    html = cats.map(c => {
+      const enough = currentUser.points >= c.threshold_points;
+      return `
+        <div class="adopt-cat-item">
+          <div class="adopt-cat-photo">🐱</div>
+          <div class="adopt-cat-info">
+            <div class="adopt-cat-name">${c.name}</div>
+            <div class="adopt-cat-meta">${c.gender} · ${c.age || '年龄未知'} · ${c.neutered} · 需要${c.threshold_points}分</div>
+          </div>
+          <button class="btn-adopt" ${enough ? '' : 'disabled'} onclick="${enough ? `confirmApply(${c.id})` : ''}">
+            ${enough ? '申请领养' : '积分不足'}
+          </button>
+        </div>
+      `;
+    }).join('');
   }
+  
+  document.getElementById('adoption-content').innerHTML = html;
 }
 
-// 初始化
-initDefaultData();
-// 检查是否已登录
-const savedUserId = localStorage.getItem('userId');
-if (savedUserId) {
-  const db = getDB();
-  const user = db.users.find(u => u.id == savedUserId);
-  if (user) {
-    loginSuccess(user);
-  }
+function confirmApply(catId) {
+  if (!confirm('确认提交领养申请？提交后管理员会审核')) return;
+  alert('申请已提交，等待管理员审核');
+  switchTab('home');
 }
 </script>
 </body>
