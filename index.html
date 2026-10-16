@@ -1511,9 +1511,18 @@ function loadHomeData() {
     ).join('');
   }
   
-  // 待领养猫咪横向列表
-  const adoptableCats = db.cats.filter(c => c.status === '可领养');
-  document.getElementById('home-cats-row').innerHTML = adoptableCats.slice(0, 8).map(c => `
+  // 写死8只可领养猫咪，避免localStorage缓存旧数据
+  const fixedCats = [
+    {id:1,name:"橘子",gender:"公",neutered:"已绝育"},
+    {id:2,name:"小白",gender:"母",neutered:"已绝育"},
+    {id:4,name:"三花",gender:"母",neutered:"已绝育"},
+    {id:5,name:"胖橘",gender:"公",neutered:"已绝育"},
+    {id:6,name:"小灰",gender:"公",neutered:"已绝育"},
+    {id:7,name:"奶糖",gender:"母",neutered:"未绝育"},
+    {id:8,name:"尾巴",gender:"公",neutered:"已绝育"},
+    {id:9,name:"墨墨",gender:"公",neutered:"已绝育"}
+  ];
+  document.getElementById('home-cats-row').innerHTML = fixedCats.map(c => `
     <div class="cat-mini-card" onclick="showCatDetail(${c.id})">
       <div class="cat-mini-photo" style="background-image:url(cat${c.id}.jpg);background-size:cover;"></div>
       <div class="cat-mini-name">${c.name}</div>
