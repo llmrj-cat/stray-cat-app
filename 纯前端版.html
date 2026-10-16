@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>流浪猫日记</title>
+<link rel="icon" href="https://llmrj-cat.github.io/stray-cat-app/assets/logo.png">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #FFF8F0;
+  color: #333;
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 80px;
+}
+/* 登录页 */
+#login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px 24px;
+}
+.login-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 24px;
+  margin-bottom: 16px;
+}
+.login-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #8B4513;
+  margin-bottom: 8px;
+}
+.login-subtitle {
+  font-size: 14px;
+  color: #A0522D;
+  margin-bottom: 32px;
+}
+.login-tabs {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.login-tab {
+  font-size: 16px;
+  color: #999;
+  cursor: pointer;
+  padding-bottom: 8px;
+  border-bottom: 2px solid transparent;
+}
+.login-tab.active {
+  color: #FFA500;
+  border-color: #FFA500;
+  font-weight: 600;
+}
+.login-form {
+  width: 100%;
+}
+.form-group {
+  margin-bottom: 16px;
+}
+.form-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #FFE4B5;
+  border-radius: 12px;
+  font-size: 16px;
+  background: #fff;
+}
+.form-input:focus {
+  outline: none;
+  border-color: #FFA500;
+}
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  background: #FFD700;
+  border: none;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #8B4513;
+  cursor: pointer;
+}
+.error-text {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 8px;
+  text-align: center;
+}
+/* 主APP */
+#app { display: none; }
+.header {
+  padding: 16px 20px;
+  background: #fff;
+  border-bottom: 1px solid #FFE4B5;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.header-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #8B4513;
+}
+.page-view { display: none; padding: 16px; }
+.page-view.active { display: block; }
+/* 卡片 */
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #FFE4B5;
+}
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #8B4513;
+  margin-bottom: 12px;
+}
+/* 底部导航 */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  background: #fff;
+  border-top: 1px solid #FFE4B5;
+  display: flex;
+  padding: 8px 0;
+  z-index: 100;
+}
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  color: #999;
+}
+.nav-item.active {
+  color: #FFA500;
+}
+.nav-icon {
+  font-size: 20px;
+}
+.nav-text {
+  font-size: 12px;
+}
+/* 猫咪卡片 */
+.cat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.cat-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #FFE4B5;
+  cursor: pointer;
+}
+.cat-photo {
+  width: 100%;
+  height: 120px;
+  background: #FFE4B5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+}
+.cat-info {
+  padding: 12px;
+}
+.cat-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+.cat-meta {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}
+/* 空状态 */
+.empty-text {
+  text-align: center;
+  color: #999;
+  padding: 40px 0;
+  font-size: 14px;
+}
+/* 按钮 */
+.btn-outline {
+  padding: 10px 20px;
+  border: 1px solid #FFA500;
+  border-radius: 20px;
+  background: #fff;
+  color: #FFA500;
+  font-size: 14px;
+  cursor: pointer;
+}
+.btn-danger {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+}
+/* 个人中心 */
+.profile-header {
+  text-align: center;
+  padding: 24px 0;
+}
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #FFE4B5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 12px;
+}
+.profile-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+.profile-points {
+  font-size: 14px;
+  color: #FFA500;
+  margin-top: 4px;
+}
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #f5f5f5;
+  cursor: pointer;
+}
+.menu-item:last-child { border-bottom: none; }
+.menu-text { font-size: 15px; color: #333; }
+.menu-arrow { color: #ccc; }
+/* 任务列表 */
+.task-item {
+  padding: 12px;
+  background: #FFF8F0;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.task-title { font-size: 14px; color: #333; }
+.task-status {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 10px;
+  background: #FFE4B5;
+  color: #8B4513;
+}
+</style>
+</head>
+<body>
+
+<!-- 登录页 -->
+<div id="login-page">
+  <img src="https://llmrj-cat.github.io/stray-cat-app/assets/logo.png" class="login-logo" alt="logo">
+  <div class="login-title">流浪猫日记</div>
+  <div class="login-subtitle">记录每一只小流浪的温暖</div>
+  
+  <div class="login-tabs">
+    <div class="login-tab active" data-tab="login" onclick="switchLoginTab('login')">登录</div>
+    <div class="login-tab" data-tab="register" onclick="switchLoginTab('register')">注册</div>
+  </div>
+
+  <form class="login-form" id="login-form" onsubmit="handleLogin(event)">
+    <div class="form-group">
+      <input type="text" class="form-input" id="login-nickname" placeholder="昵称" required>
+    </div>
+    <div class="form-group">
+      <input type="password" class="form-input" id="login-password" placeholder="密码" required>
+    </div>
+    <button type="submit" class="btn-primary">登录</button>
+    <div class="error-text" id="login-error"></div>
+  </form>
+
+  <form class="login-form" id="register-form" style="display:none;" onsubmit="handleRegister(event)">
+    <div class="form-group">
+      <input type="text" class="form-input" id="register-nickname" placeholder="昵称" required>
+    </div>
+    <div class="form-group">
+      <input type="password" class="form-input" id="register-password" placeholder="密码" required>
+    </div>
+    <button type="submit" class="btn-primary">注册</button>
+    <div class="error-text" id="register-error"></div>
+  </form>
+</div>
+
+<!-- 主APP -->
+<div id="app">
+  <div class="header">
+    <div class="header-title" id="header-title">首页</div>
+  </div>
+
+  <!-- 首页 -->
+  <div class="page-view active" id="page-home">
+    <div class="card">
+      <div class="card-title">今日小目标</div>
+      <div id="today-plan-list">
+        <div class="empty-text">今日暂无安排</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">待领养小流浪</div>
+      <div class="cat-grid" id="home-cats-grid">
+        <div class="empty-text">暂无待领养猫咪</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 找猫咪 -->
+  <div class="page-view" id="page-cats">
+    <div class="card-title" style="margin-bottom:12px;">所有猫咪</div>
+    <div class="cat-grid" id="cats-grid">
+      <div class="empty-text">暂无猫咪</div>
+    </div>
+  </div>
+
+  <!-- 救助计划 -->
+  <div class="page-view" id="page-tasks">
+    <div class="card-title" style="margin-bottom:12px;">救助任务</div>
+    <div id="tasks-list">
+      <div class="empty-text">暂无任务</div>
+    </div>
+  </div>
+
+  <!-- 我的 -->
+  <div class="page-view" id="page-profile">
+    <div class="card">
+      <div class="profile-header">
+        <div class="avatar">🐱</div>
+        <div class="profile-name" id="profile-nickname">用户名</div>
+        <div class="profile-points">积分：<span id="profile-points">0</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="menu-item" onclick="alert('我的投喂记录')">
+        <div class="menu-text">我的投喂记录</div>
+        <div class="menu-arrow">›</div>
+      </div>
+      <div class="menu-item" onclick="alert('附近猫屋')">
+        <div class="menu-text">附近猫屋</div>
+        <div class="menu-arrow">›</div>
+      </div>
+      <div class="menu-item" onclick="alert('积分商城')">
+        <div class="menu-text">积分商城</div>
+        <div class="menu-arrow">›</div>
+      </div>
+    </div>
+    <button class="btn-danger" onclick="handleLogout()">退出登录</button>
+  </div>
+</div>
+
+<!-- 底部导航 -->
+<div class="bottom-nav">
+  <div class="nav-item active" data-tab="home" onclick="switchTab('home')">
+    <div class="nav-icon">🏠</div>
+    <div class="nav-text">首页</div>
+  </div>
+  <div class="nav-item" data-tab="cats" onclick="switchTab('cats')">
+    <div class="nav-icon">🐱</div>
+    <div class="nav-text">找猫咪</div>
+  </div>
+  <div class="nav-item" data-tab="tasks" onclick="switchTab('tasks')">
+    <div class="nav-icon">📋</div>
+    <div class="nav-text">救助计划</div>
+  </div>
+  <div class="nav-item" data-tab="profile" onclick="switchTab('profile')">
+    <div class="nav-icon">👤</div>
+    <div class="nav-text">我的</div>
+  </div>
+</div>
+
+<script>
+// ===== 本地数据库（localStorage）=====
+function getDB() {
+  return {
+    users: JSON.parse(localStorage.getItem('users') || '[]'),
+    cats: JSON.parse(localStorage.getItem('cats') || '[]'),
+    tasks: JSON.parse(localStorage.getItem('tasks') || '[]'),
+    feedings: JSON.parse(localStorage.getItem('feedings') || '[]')
+  };
+}
+function saveDB(db) {
+  localStorage.setItem('users', JSON.stringify(db.users));
+  localStorage.setItem('cats', JSON.stringify(db.cats));
+  localStorage.setItem('tasks', JSON.stringify(db.tasks));
+  localStorage.setItem('feedings', JSON.stringify(db.feedings));
+}
+
+// 初始化默认数据
+function initDefaultData() {
+  const db = getDB();
+  if (db.cats.length === 0) {
+    db.cats = [
+      { id: 1, name: '橘子', gender: '公', neutered: '已绝育', status: '可领养', photo: '🐱', points: 0 },
+      { id: 2, name: '小白', gender: '母', neutered: '已绝育', status: '可领养', photo: '🐈', points: 0 },
+      { id: 3, name: '小黑', gender: '公', neutered: '未绝育', status: '待救助', photo: '🐈‍⬛', points: 0 },
+      { id: 4, name: '三花', gender: '母', neutered: '已绝育', status: '可领养', photo: '🐱', points: 0 }
+    ];
+    db.tasks = [
+      { id: 1, title: '给橘子喂猫粮', status: '进行中' },
+      { id: 2, title: '带小黑去绝育', status: '待开始' },
+      { id: 3, title: '给三花找领养家庭', status: '进行中' }
+    ];
+    saveDB(db);
+  }
+}
+
+let currentUser = null;
+
+// ===== 登录注册 =====
+function switchLoginTab(tab) {
+  document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+  document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
+}
+
+function handleLogin(e) {
+  e.preventDefault();
+  const nickname = document.getElementById('login-nickname').value;
+  const password = document.getElementById('login-password').value;
+  const db = getDB();
+  const user = db.users.find(u => u.nickname === nickname && u.password === password);
+  if (!user) {
+    document.getElementById('login-error').textContent = '昵称或密码错误';
+    return;
+  }
+  loginSuccess(user);
+}
+
+function handleRegister(e) {
+  e.preventDefault();
+  const nickname = document.getElementById('register-nickname').value;
+  const password = document.getElementById('register-password').value;
+  const db = getDB();
+  if (db.users.find(u => u.nickname === nickname)) {
+    document.getElementById('register-error').textContent = '昵称已被占用';
+    return;
+  }
+  const newUser = { id: Date.now(), nickname, password, points: 100, is_admin: false };
+  db.users.push(newUser);
+  saveDB(db);
+  loginSuccess(newUser);
+}
+
+function loginSuccess(user) {
+  currentUser = user;
+  localStorage.setItem('userId', user.id);
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  updateProfileUI();
+  loadHomeData();
+  switchTab('home');
+}
+
+function handleLogout() {
+  currentUser = null;
+  localStorage.removeItem('userId');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-page').style.display = 'flex';
+}
+
+// ===== 页面切换 =====
+function switchTab(tabName) {
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.toggle('active', item.dataset.tab === tabName);
+  });
+  document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+  const pageMap = {
+    home: 'page-home',
+    cats: 'page-cats',
+    tasks: 'page-tasks',
+    profile: 'page-profile'
+  };
+  document.getElementById(pageMap[tabName]).classList.add('active');
+  const titleMap = { home: '首页', cats: '找猫咪', tasks: '救助计划', profile: '我的' };
+  document.getElementById('header-title').textContent = titleMap[tabName];
+  
+  if (tabName === 'home') loadHomeData();
+  if (tabName === 'cats') loadCats();
+  if (tabName === 'tasks') loadTasks();
+  if (tabName === 'profile') loadProfile();
+}
+
+// ===== 数据加载 =====
+function loadHomeData() {
+  const db = getDB();
+  // 今日计划
+  const planList = document.getElementById('today-plan-list');
+  const todayTasks = db.tasks.filter(t => t.status === '进行中');
+  if (todayTasks.length === 0) {
+    planList.innerHTML = '<div class="empty-text">今日暂无安排</div>';
+  } else {
+    planList.innerHTML = todayTasks.map(t => 
+      `<div class="task-item"><div class="task-title">${t.title}</div><div class="task-status">进行中</div></div>`
+    ).join('');
+  }
+  // 待领养猫咪
+  const adoptCats = db.cats.filter(c => c.status === '可领养');
+  const grid = document.getElementById('home-cats-grid');
+  if (adoptCats.length === 0) {
+    grid.innerHTML = '<div class="empty-text">暂无待领养猫咪</div>';
+  } else {
+    grid.innerHTML = adoptCats.map(c => `
+      <div class="cat-card" onclick="alert('查看${c.name}详情')">
+        <div class="cat-photo">${c.photo}</div>
+        <div class="cat-info">
+          <div class="cat-name">${c.name}</div>
+          <div class="cat-meta">${c.gender} · ${c.neutered}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+function loadCats() {
+  const db = getDB();
+  const grid = document.getElementById('cats-grid');
+  if (db.cats.length === 0) {
+    grid.innerHTML = '<div class="empty-text">暂无猫咪</div>';
+  } else {
+    grid.innerHTML = db.cats.map(c => `
+      <div class="cat-card" onclick="alert('查看${c.name}详情')">
+        <div class="cat-photo">${c.photo}</div>
+        <div class="cat-info">
+          <div class="cat-name">${c.name}</div>
+          <div class="cat-meta">${c.gender} · ${c.status}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+function loadTasks() {
+  const db = getDB();
+  const list = document.getElementById('tasks-list');
+  if (db.tasks.length === 0) {
+    list.innerHTML = '<div class="empty-text">暂无任务</div>';
+  } else {
+    list.innerHTML = db.tasks.map(t => `
+      <div class="task-item">
+        <div class="task-title">${t.title}</div>
+        <div class="task-status">${t.status}</div>
+      </div>
+    `).join('');
+  }
+}
+
+function loadProfile() {
+  updateProfileUI();
+}
+
+function updateProfileUI() {
+  if (currentUser) {
+    document.getElementById('profile-nickname').textContent = currentUser.nickname;
+    document.getElementById('profile-points').textContent = currentUser.points;
+  }
+}
+
+// 初始化
+initDefaultData();
+// 检查是否已登录
+const savedUserId = localStorage.getItem('userId');
+if (savedUserId) {
+  const db = getDB();
+  const user = db.users.find(u => u.id == savedUserId);
+  if (user) {
+    loginSuccess(user);
+  }
+}
+</script>
+</body>
+</html>
