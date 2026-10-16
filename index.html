@@ -1150,13 +1150,13 @@ body {
       </div>
 
       <!-- 今日重点猫屋 -->
-      <div class="house-highlight">
+      <div class="house-highlight" style="background-image:url(assets/home-bg-cats.jpg);background-size:cover;background-position:center;color:#fff;">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;">
           <div>
-            <h3 style="font-size:18px;margin-bottom:8px;">操场边猫窝</h3>
-            <span class="house-tag">📍 TNR进行中</span>
+            <h3 style="font-size:18px;margin-bottom:8px;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,0.3);">操场边猫窝</h3>
+            <span class="house-tag" style="background:rgba(255,255,255,0.9);">📍 TNR进行中</span>
           </div>
-          <div class="house-photo-mini">🐱</div>
+          <div class="house-photo-mini" style="background-image:url(assets/logo.png);background-size:cover;background-color:rgba(255,255,255,0.9);"></div>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;">
           <div style="font-size:12px;color:#5C554D;">
@@ -1515,7 +1515,7 @@ function loadHomeData() {
   const adoptableCats = db.cats.filter(c => c.status === '可领养');
   document.getElementById('home-cats-row').innerHTML = adoptableCats.slice(0, 8).map(c => `
     <div class="cat-mini-card" onclick="showCatDetail(${c.id})">
-      <div class="cat-mini-photo">🐱</div>
+      <div class="cat-mini-photo" style="background-image:url(assets/cat${c.id}.jpg);background-size:cover;"></div>
       <div class="cat-mini-name">${c.name}</div>
       <div class="cat-mini-meta">${c.gender} · ${c.neutered}</div>
     </div>
@@ -1556,7 +1556,7 @@ function loadCats(filter = '') {
     
     return `
       <div class="cat-card" onclick="showCatDetail(${cat.id})">
-        <div class="cat-photo">🐱</div>
+        <div class="cat-photo" style="background-image:url(assets/cat${cat.id}.jpg);background-size:cover;background-position:center;"></div>
         <div class="cat-info">
           <div class="cat-name">
             ${cat.name}
@@ -1596,7 +1596,7 @@ function showCatDetail(catId) {
     : 0;
   
   document.getElementById('cat-detail-content').innerHTML = `
-    <div class="detail-hero">🐱</div>
+    <div class="detail-hero" style="background-image:url(assets/cat${cat.id}.jpg);background-size:cover;background-position:center;"></div>
     <h2 style="font-size:22px;margin-bottom:4px;">${cat.name}</h2>
     <div style="color:#8A8178;font-size:13px;margin-bottom:16px;">${cat.gender} · ${cat.age} · ${cat.location}</div>
     
@@ -1749,7 +1749,7 @@ function loadAdoptionPage() {
       const enough = currentUser.points >= c.threshold_points;
       return `
         <div class="adopt-cat-item">
-          <div class="adopt-cat-photo">🐱</div>
+          <div class="adopt-cat-photo" style="background-image:url(assets/cat${c.id}.jpg);background-size:cover;background-position:center;"></div>
           <div class="adopt-cat-info">
             <div class="adopt-cat-name">${c.name}</div>
             <div class="adopt-cat-meta">${c.gender} · ${c.age || '年龄未知'} · ${c.neutered} · 需要${c.threshold_points}分</div>
